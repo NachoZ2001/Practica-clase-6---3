@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "a2aa2887-8a31-4ac4-af4f-9305de527d3a": {
+      "ProjectGuid": "a2aa2887-8a31-4ac4-af4f-9305de527d3a",
+      "DisplayName": "ConsoleApp1",
+      "ColorIndex": 0
+    },
+    "a3984822-e49f-4957-b955-a4c1e4707f9e": {
+      "ProjectGuid": "a3984822-e49f-4957-b955-a4c1e4707f9e",
+      "DisplayName": "Logica",
+      "ColorIndex": 1
+    },
+    "7f78cc2e-3805-444f-b96f-b0db04da4d62": {
+      "ProjectGuid": "7f78cc2e-3805-444f-b96f-b0db04da4d62",
+      "DisplayName": "Persistencia",
+      "ColorIndex": 2
+    },
+    "5ae9248e-c0fa-4857-a335-a7ca0137f0a2": {
+      "ProjectGuid": "5ae9248e-c0fa-4857-a335-a7ca0137f0a2",
+      "DisplayName": "Entidades",
+      "ColorIndex": 3
+    }
+  },
+  "NextColorIndex": 4
+}
