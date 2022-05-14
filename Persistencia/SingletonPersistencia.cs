@@ -4,10 +4,10 @@ namespace Persistencia
 {
     public sealed class SingletonPersistencia
     {
-        public List<Jugador> jugadores = null;
         private static SingletonPersistencia instance = null;
         private SingletonPersistencia() { }
-        public static SingletonPersistencia ReturnInstance
+        public EventHandler<PasarEntidadEventArgs> PasarEntidad;
+        public static SingletonPersistencia Instance
         {
             get
             {
@@ -18,9 +18,10 @@ namespace Persistencia
                 return instance;
             }
         }
-        string pathJugadores = "";
+        string pathJugadores = @"C:\Users\UCSE\Desktop\Jugadores.txt";
         public List<Jugador> LeerJugadores()
         {
+            List<Jugador> jugadores = new List<Jugador>();
             if (File.Exists(pathJugadores))
             {
                 using (StreamReader reader = new StreamReader(pathJugadores))
@@ -34,7 +35,7 @@ namespace Persistencia
             }
             return jugadores;
         }
-        public void GuardarListadoJugadores(List<Jugador> jugadores)
+        public void GuardarListadoJugadores(int identificacionEntidad, List<Jugador> jugadores)
         {
             if (!File.Exists(pathJugadores))
             {
@@ -53,45 +54,31 @@ namespace Persistencia
                     writer.Write(jugadorJson);
                 }
             }
-            }
-        }
-        public static void DarAltaJugadorHandler(object? sender, DarAltaJugadorEventArgs jugador)
-        {           
-            if (jugadores == null)
+            if (this.PasarEntidad != null)
             {
-                jugadores = new List<Jugador>();               
+                this.PasarEntidad(this, new PasarEntidadEventArgs { IdentificacionEntidad = identificacionEntidad,  Jugadores = jugadores });
             }
-            jugadores.Add(jugador);
         }
-        public static void ModificarJugador(object? sender, ModificarJugadorEventArgs datosModificar)
+        public void GuardarListadoJugadores( List<Jugador> jugadores)
         {
-            if (jugadores == null)
+            if (!File.Exists(pathJugadores))
             {
-                throw new Exception("No hay ningun jugador registrado");
+                File.Create(pathJugadores);
+                using (StreamWriter writer = new StreamWriter(pathJugadores))
+                {
+                    string jugadorJson = JsonConvert.SerializeObject(jugadores);
+                    writer.Write(jugadorJson);
+                }
             }
             else
             {
-                Jugador jugador = jugadores.Find(x => x.Identificacion == datosModificar.Identificacion);
-                if (datosModificar.NumeroCamiseta != 0)
+                using (StreamWriter writer = new StreamWriter(pathJugadores, false))
                 {
-                    jugador.NumeroCamiseta = datosModificar.NumeroCamiseta;
+                    string jugadorJson = JsonConvert.SerializeObject(jugadores);
+                    writer.Write(jugadorJson);
                 }
-                if (datosModificar.Sueldo != 0)
-                {
-                    jugador.Sueldo = datosModificar.Sueldo;
-                }
-            }           
-        }
-        public static void DarBajaJugadorHandler(object? sender, DarBajaJugadorEventArgs identificacion)
-        {
-            if (jugadores == null)
-            {
-                throw new Exception("No hay ningun jugador registrado");
             }
-            else
-            {
-                jugadores.Remove(jugadores.Find(x => x.Identificacion == identificacion.IdentificacionJugador));
-            }            
         }
     }
 }
+

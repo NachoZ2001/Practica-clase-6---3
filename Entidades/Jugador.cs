@@ -18,38 +18,18 @@
             this.Estatura = estatura;
         }
     }
-    public class DarAltaJugadorEventArgs : Jugador
+    public class PasarEntidadEventArgs : EventArgs
     {
-        public DarAltaJugadorEventArgs() { }
-        public DarAltaJugadorEventArgs(int identificacion, int edad, int numeroCamiseta, double sueldo, double estatura)
-        {
-            this.Identificacion = identificacion;
-            this.Edad = edad;
-            this.NumeroCamiseta = numeroCamiseta;
-            this.Sueldo = sueldo;
-            this.Estatura = estatura;
-        }
+        public int IdentificacionEntidad { get; set; }
+        public List<Jugador> Jugadores { get; set; }
     }
-    public class DarBajaJugadorEventArgs
-    {
-        public int IdentificacionJugador { get; set; }
-        public DarBajaJugadorEventArgs() { }
-        public DarBajaJugadorEventArgs(int identificacion)
-        {
-            this.IdentificacionJugador = identificacion;
-        }
-    }
-    public class ModificarJugadorEventArgs 
+    public class ImprimirEntidadEventArgs : EventArgs
     {
         public int Identificacion { get; set; }
         public int NumeroCamiseta { get; set; }
+        public int Edad { get; set; }
         public double Sueldo { get; set; }
-        public ModificarJugadorEventArgs() { }
-        public ModificarJugadorEventArgs(int identificacion, int numeroCamiseta, double sueldo)
-        {
-            this.Identificacion = identificacion;
-            this.NumeroCamiseta = numeroCamiseta;
-            this.Sueldo = sueldo;
-        }
+        public double Estatura { get; set; }
     }
+
 }

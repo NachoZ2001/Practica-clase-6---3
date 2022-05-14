@@ -7,7 +7,7 @@ namespace Logica
         private static SingletonLogica instance = null;
         private SingletonLogica() { }
 
-        public static SingletonLogica ReturnInstance
+        public static SingletonLogica Instance
         {
             get
             {
@@ -16,41 +16,74 @@ namespace Logica
                     instance = new SingletonLogica();
                 }
                 return instance;
-            }           
+            }
+        }
+        public EventHandler<ImprimirEntidadEventArgs> ImprimirEntidad;
+        public List<Jugador> jugadores;
+
+        public void DarAltaJugador(int edad, int numeroCamiseta, double sueldo, double estatura)
+        {
+            jugadores = LeerListaJugadores();
+            int identificacion = 1;
+            if (jugadores != null)
+            {
+                identificacion = jugadores.Count + 1;
+            }
+            Jugador nuevoJugador = new Jugador(identificacion, edad, numeroCamiseta, sueldo, estatura);
+            jugadores.Add(nuevoJugador);
+            GuardarListaJugadores(identificacion, jugadores);
         }
 
-        public EventHandler<DarAltaJugadorEventArgs> DarAltaJugadorEventHandler;
-        public EventHandler<DarBajaJugadorEventArgs> DarBajaJugadorEventHandler;
-        public EventHandler<ModificarJugadorEventArgs> ModificarJugadorEventHandler;
-        public EventHandler RetornarJugadores;
-        public void DarAltaJugador(int identificacion, int edad, int numeroCamiseta, double sueldo, double estatura)
-        {
-            Jugador nuevoJugador = new Jugador(identificacion, edad, numeroCamiseta, sueldo, estatura);
-            if (this.DarAltaJugadorEventHandler != null)
-            {
-                this.DarAltaJugadorEventHandler(this, new DarAltaJugadorEventArgs(identificacion, edad, numeroCamiseta, sueldo, estatura) );
-            }
-        }
         public void DarBajaJugador(int identificacion)
-        {          
-            if (this.DarBajaJugadorEventHandler != null)
+        {
+            jugadores = LeerListaJugadores();
+            if (jugadores != null)
             {
-                this.DarBajaJugadorEventHandler(this, new DarBajaJugadorEventArgs(identificacion));
+                jugadores.Remove(jugadores.Find(x => x.Identificacion == identificacion));
+            }
+            GuardarListaJugadores(jugadores);
+        }
+
+        public void ModificarJugador(int identificacion, int numeroCamiseta = 0, double sueldo = 0)
+        {
+            jugadores = LeerListaJugadores();
+            if (jugadores != null)
+            {
+                Jugador jugadorModificar = jugadores.Find(x => x.Identificacion == identificacion);
+                if (numeroCamiseta != 0)
+                {
+                    jugadorModificar.NumeroCamiseta = numeroCamiseta;
+                }
+                if (sueldo != 0)
+                {
+                    jugadorModificar.Sueldo = sueldo;
+                }
+            }
+            GuardarListaJugadores(identificacion, jugadores);
+        }
+        public void PasarEntidadHandler(object? sender, PasarEntidadEventArgs entidad)
+        {
+            if (this.ImprimirEntidad != null)
+            {
+                Jugador jugador = entidad.Jugadores.Find(x => x.Identificacion == entidad.IdentificacionEntidad);
+                if (jugador != null)
+                {
+                    this.ImprimirEntidad(this, new ImprimirEntidadEventArgs { Identificacion = jugador.Identificacion, NumeroCamiseta = jugador.NumeroCamiseta, Edad = jugador.Edad, Sueldo = jugador.Sueldo, Estatura = jugador.Estatura });
+                }                
             }
         }
-        public void ModificarJugador(int identificacion, int edad = 0, int numeroCamiseta = 0, double sueldo = 0, double estatura = 0)
+
+        public List<Jugador> LeerListaJugadores()
         {
-            if (this.ModificarJugadorEventHandler != null)
-            {
-                this.ModificarJugadorEventHandler(this, new ModificarJugadorEventArgs());
-            }
+            return SingletonPersistencia.Instance.LeerJugadores();
         }
-        public List<Jugador> retornarJugadores()
+        public void GuardarListaJugadores(int identificacionEntidad, List<Jugador> jugadores)
         {
-            if (this.RetornarJugadores != null)
-            {
-                this.RetornarJugadores(this, new EventArgs());
-            }
+            SingletonPersistencia.Instance.GuardarListadoJugadores(identificacionEntidad, jugadores);
+        }
+        public void GuardarListaJugadores(List<Jugador> jugadors)
+        {
+            SingletonPersistencia.Instance.GuardarListadoJugadores(jugadores);
         }
     }
     

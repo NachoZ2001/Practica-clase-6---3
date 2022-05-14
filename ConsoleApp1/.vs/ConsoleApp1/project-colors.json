@@ -20,7 +20,12 @@
       "ProjectGuid": "5ae9248e-c0fa-4857-a335-a7ca0137f0a2",
       "DisplayName": "Entidades",
       "ColorIndex": 3
+    },
+    "3de7a016-b9aa-49a8-9ae8-7952e30a53a0": {
+      "ProjectGuid": "3de7a016-b9aa-49a8-9ae8-7952e30a53a0",
+      "DisplayName": "ArgsEventos",
+      "ColorIndex": 4
     }
   },
-  "NextColorIndex": 4
+  "NextColorIndex": 5
 }
